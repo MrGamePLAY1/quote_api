@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "author": "Albert Einstein",
+        "quote": "Life is like riding a bicycle. To keep your balance, you must keep moving.",
+        "category": "Science"
+    },
+    {
+        "id": 2,
+        "author": "Steve Jobs",
+        "quote": "Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. And the only way to do great work is to love what you do.",
+        "category": "Technology/Business"
+    },
+    {
+        "id": 3,
+        "author": "Maya Angelou",
+        "quote": "I've learned that people will forget what you said, people will forget what you did, but people will never forget how you made them feel.",
+        "category": "Literature"
+    },
+    {
+        "id": 4,
+        "author": "Mahatma Gandhi",
+        "quote": "Be the change that you wish to see in the world.",
+        "category": "Activism/Philosophy"
+    },
+    {
+        "id": 5,
+        "author": "Oscar Wilde",
+        "quote": "Be yourself; everyone else is already taken.",
+        "category": "Literature"
+    },
+    {
+        "id": 6,
+        "author": "Elon Musk",
+        "quote": "When something is important enough, you do it even if the odds are not in your favor.",
+        "category": "Technology/Business"
+    },
+    {
+        "id": 7,
+        "author": "Bill Gates",
+        "quote": "It's fine to celebrate success, but it is more important to heed the lessons of failure.",
+        "category": "Technology/Philanthropy"
+    },
+    {
+        "id": 8,
+        "author": "Mark Zuckerberg",
+        "quote": "The biggest risk is not taking any risk... In a world that is changing really quickly, the only strategy that is guaranteed to fail is not taking risks.",
+        "category": "Technology/Business"
+    },
+    {
+        "id": 9,
+        "author": "Grace Hopper",
+        "quote": "The most dangerous phrase in the language is, 'We've always done it this way.'",
+        "category": "Technology"
+    },
+    {
+        "id": 10,
+        "author": "Ada Lovelace",
+        "quote": "The Analytical Engine weaves algebraical patterns just as the Jacquard loom weaves flowers and leaves.",
+        "category": "Technology"
+    }
+]
