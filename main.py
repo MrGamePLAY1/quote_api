@@ -1,5 +1,5 @@
 #  python -m uvicorn main:app --reload
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 import json
@@ -76,8 +76,15 @@ def get_catgories():
 
 
 # Adding new quote
-@app.post("/quotes/add")
+@app.post("/quotes/add", response_model=Quote)
 async def add_quote(quote: Quote):
+    if not quote.author:
+        raise HTTPException(status_code=400, detail="Author is required")
+    if not quote.quote:
+        raise HTTPException(status_code=400, detail="Quote is required")
+    if not quote.category:
+        raise HTTPException(status_code=400, detail="Category is required")
+
     new_quote = {
         "id": len(quotes_data) + 1,  # Generate a unique ID for the quote
         "quote": quote.quote,
@@ -85,4 +92,7 @@ async def add_quote(quote: Quote):
         "category": quote.category
     }
     quotes_data.append(new_quote)
+    with open("quotes.json", "w") as file:
+        json.dump(quotes_data, file)
+        
     return {"message": "Quote added successfully", "quote": new_quote}
