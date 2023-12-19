@@ -27,6 +27,8 @@ def get_random_quote():
 @app.get("/quotes/author/{author}")
 def get_quotes_by_author(author: str):
     quotes = [quote for quote in quotes_data if quote["author"] == author]
+    if not quotes:
+        return JSONResponse(content={"error": f"No quotes found for the category: {author}"})
     return JSONResponse(content=quotes)
 
 @app.get('/quotes/category/{category}')
