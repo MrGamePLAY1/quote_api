@@ -45,3 +45,17 @@ def get_random_author():
         return JSONResponse(content={"error": f"No quotes found for the category: {author}"})
     return JSONResponse(content=random_author)
 
+# List of authors in the quotes data
+@app.get("/authors")
+def get_authors():
+    author = [quote["author"] for quote in quotes_data]
+    return JSONResponse(content=author)
+
+# List of categories in the quotes data
+@app.get("/categories")
+def get_catgories():
+    new_list = []
+    for quote in quotes_data:
+        if quote["category"] not in new_list:
+            new_list.append(quote["category"])
+    return JSONResponse(content=new_list)
