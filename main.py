@@ -38,3 +38,10 @@ def get_quotes_by_category(category: str):
         return JSONResponse(content={"error": f"No quotes found for the category: {category}"})
     return JSONResponse(content=filterQuote)
     
+@app.get('/quotes/randomAuthor')
+def get_random_author():
+    random_author = random.choice(quotes_data)
+    if not random_author:
+        return JSONResponse(content={"error": f"No quotes found for the category: {author}"})
+    return JSONResponse(content=random_author)
+
