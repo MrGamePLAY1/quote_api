@@ -1,10 +1,23 @@
 #  python -m uvicorn main:app --reload
 from fastapi import FastAPI
+from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 import json
 import random
 
 app = FastAPI()
+
+# Model for the quote
+class Quote(BaseModel):
+    id: int
+    author: str
+    quote: str
+    category: str
+
+
+# Placeholder data store (in-memory list for demonstration purposes)
+quotes_data = []
+
 
 @app.get("/")
 def read_root():
@@ -59,3 +72,17 @@ def get_catgories():
         if quote["category"] not in new_list:
             new_list.append(quote["category"])
     return JSONResponse(content=new_list)
+
+
+
+# Adding new quote
+@app.post("/quotes/add")
+async def add_quote(quote: Quote):
+    new_quote = {
+        "id": len(quotes_data) + 1,  # Generate a unique ID for the quote
+        "quote": quote.quote,
+        "author": quote.author,
+        "category": quote.category
+    }
+    quotes_data.append(new_quote)
+    return {"message": "Quote added successfully", "quote": new_quote}
