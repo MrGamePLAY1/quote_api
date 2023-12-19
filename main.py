@@ -7,14 +7,6 @@ import random
 
 app = FastAPI()
 
-# Model for the quote
-class Quote(BaseModel):
-    id: int
-    author: str
-    quote: str
-    category: str
-
-
 # Placeholder data store (in-memory list for demonstration purposes)
 quotes_data = []
 
@@ -75,6 +67,14 @@ def get_catgories():
 
 
 
+# Model for the quote
+class Quote(BaseModel):
+    id: int
+    author: str
+    quote: str
+    category: str
+
+
 # Adding new quote
 @app.post("/quotes/add", response_model=Quote)
 async def add_quote(quote: Quote):
@@ -92,7 +92,17 @@ async def add_quote(quote: Quote):
         "category": quote.category
     }
     quotes_data.append(new_quote)
-    with open("quotes.json", "w") as file:
-        json.dump(quotes_data, file)
-        
-    return {"message": "Quote added successfully", "quote": new_quote}
+
+    # Save data to the JSON file
+    try:
+        with open("quotes.json", "w") as file:
+            json.dump(quotes_data, file, indent=2)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error saving data to file: {str(e)}")
+
+    # Create an instance of the Quote model before returning it
+    added_quote = Quote(**new_quote)
+
+    # Return the instance of the Quote model
+    return added_quote
+
