@@ -100,9 +100,3 @@ async def add_quote(quote: Quote):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error saving data to file: {str(e)}")
 
-    # Create an instance of the Quote model before returning it
-    added_quote = Quote(**new_quote)
-
-    # Return the instance of the Quote model
-    return added_quote
-
