@@ -1,4 +1,6 @@
 #  python -m uvicorn main:app --reload
+# macOS python3 -m pip install xxxx
+
 from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
