@@ -1,4 +1,7 @@
-#  python -m uvicorn main:app --reload
+# Windows: #  python -m uvicorn main:app --reload 
+# Mac: #  python3 -m uvicorn main:app --reload 
+
+
 # macOS python3 -m pip install xxxx
 
 from fastapi import FastAPI, HTTPException, Query
