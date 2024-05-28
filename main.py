@@ -10,6 +10,7 @@ from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 import json
+import os
 import random
 
 app = FastAPI()
@@ -107,7 +108,37 @@ async def add_quote(quote: Quote):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error saving data to file: {str(e)}")
 
-@app.get("/quotes/remove/{id}")
+
+# Ability to remove a quote by searching for the ID
+@app.get("/quote/remove/{id}")
 async def remove_quote(id: int):
-    await database.execute(query.delete().where(quotes_data.id == id))
+    filepath = 'quotes.json'
+    
+    if not os.path.exists(filepath):
+        raise HTTPException(status_code=404, detail='Quotes file not found')
+    
+    try:
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail='Error reading the quotes file')
+
+    if not isinstance(data, list):
+        raise HTTPException(status_code=500, detail='Quotes file is not a valid list')
+    
+    # Find the quote with the specified ID
+    quote_index = next((index for (index, d) in enumerate(data) if d.get("id") == id), None)
+
+    if quote_index is None:
+        raise HTTPException(status_code=404, detail='Quote ID not found')
+
+    # Remove the quote from the list
+    del data[quote_index]
+    
+    try:
+        with open(filepath, 'w') as fp:
+            json.dump(data, fp, indent=4)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f'An error occurred while saving the file: {str(e)}')
+
     return {"message": "Quote has been successfully deleted."}
