@@ -58,5 +58,11 @@
     "author": "Ada Lovelace",
     "quote": "The Analytical Engine weaves algebraical patterns just as the Jacquard loom weaves flowers and leaves.",
     "category": "Technology"
+  },
+  {
+    "id":11,
+    "author": "testing",
+    "quote": "testing",
+    "category": "testing"
   }
 ]

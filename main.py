@@ -107,3 +107,7 @@ async def add_quote(quote: Quote):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error saving data to file: {str(e)}")
 
+@app.get("/quotes/remove/{id}")
+async def remove_quote(id: int):
+    await database.execute(query.delete().where(quotes_data.id == id))
+    return {"message": "Quote has been successfully deleted."}
