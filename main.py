@@ -6,17 +6,37 @@
 
 # macOS python3 -m pip install xxxx
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 import json
 import os
 import random
 
+role_permission: dict[str, list[str]] = {
+    'admin': ['read', 'write', 'update', 'delete'],
+    'editor': ['read', 'write', 'update'],
+    'viewer': ['read']
+}
+
+users = dict[str, dict[str, list[str]]] = {
+    'mr_gameplay': {'roles': ['admin']},
+    'user2': {'roles': ['editor']},
+    'user3': {'roles': ['viewer']}
+}
+
 app = FastAPI()
 
 # Placeholder data store (in-memory list for demonstration purposes)
 quotes_data = []
+
+# Get current user
+def get_current_user(request: Request):
+    user = request.headers.get('username')
+    if not user or user not in users:
+        raise HTTPException(status_code=401, detail="Unauthorised")
+    return users[user]
+
 
 
 @app.get("/")
