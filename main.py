@@ -138,14 +138,6 @@ async def add_quote(quote: Quote):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error saving data to file: {str(e)}")
 
-# /quotes/update/11
-@app.get('/quotes/update/{id}')
-async def update_quote(id: id):
-    quotes = 'quotes.json'
-
-    if not os.path.exists(quotes):
-        raise HTTPException(status_code=404, detail=f"No quote with the id {id} found")
-
 
 # /quotes/remove/11
 @app.get("/quotes/remove/{id}")
@@ -180,3 +172,12 @@ async def remove_quote(id: int):
         raise HTTPException(status_code=500, detail=f'An error occurred while saving the file: {str(e)}')
 
     return {"message": "Quote has been successfully deleted."}
+
+
+# /quotes/update/11
+@app.get('/quotes/update/{id}')
+async def update_quote(id: id):
+    quotes = 'quotes.json'
+
+    if not os.path.exists(quotes):
+        raise HTTPException(status_code=404, detail=f"No quote with the id {id} found")
