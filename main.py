@@ -20,7 +20,7 @@ role_permission: dict[str, list[str]] = {
 }
 
 users = dict[str, dict[str, list[str]]] = {
-    'mr_gameplay': {'roles': ['admin']},
+    'user1': {'roles': ['admin']},
     'user2': {'roles': ['editor']},
     'user3': {'roles': ['viewer']}
 }
@@ -38,10 +38,15 @@ def get_current_user(request: Request):
     return users[user]
 
 
+#--------------Default root-------------------
+
 
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
+#---------------------------------------------
+
 
 # Load quotes data from the file
 with open("quotes.json", "r") as file:
@@ -52,11 +57,13 @@ with open("quotes.json", "r") as file:
 def get_all_quotes():
     return JSONResponse(content=quotes_data)
 
+# /quotes/random
 @app.get("/quotes/random")
 def get_random_quote():
     random_quote = random.choice(quotes_data)
     return JSONResponse(content=random_quote)
 
+# /quotes/author/Bill Gates
 @app.get("/quotes/author/{author}")
 def get_quotes_by_author(author: str):
     quotes = [quote for quote in quotes_data if quote["author"] == author]
@@ -64,13 +71,15 @@ def get_quotes_by_author(author: str):
         return JSONResponse(content={"error": f"No quotes found for the category: {author}"})
     return JSONResponse(content=quotes)
 
+# /quotes/category/Technology
 @app.get('/quotes/category/{category}')
 def get_quotes_by_category(category: str):
     filterQuote = [quote for quote in quotes_data if quote.get("category", "").lower() == category.lower()]
     if not filterQuote:
         return JSONResponse(content={"error": f"No quotes found for the category: {category}"})
     return JSONResponse(content=filterQuote)
-    
+
+# /quotes/randomAuthor    
 @app.get('/quotes/randomAuthor')
 def get_random_author():
     random_author = random.choice(quotes_data)
@@ -78,14 +87,14 @@ def get_random_author():
         return JSONResponse(content={"error": f"No quotes found for the category: {author}"})
     return JSONResponse(content=random_author)
 
-# List of authors in the quotes data
-@app.get("/authors")
+# /quotes/authors
+@app.get("quotes/authors")
 def get_authors():
     author = [quote["author"] for quote in quotes_data]
     return JSONResponse(content=author)
 
-# List of categories in the quotes data
-@app.get("/categories")
+# /quotes/categories
+@app.get("quotes/categories")
 def get_catgories():
     new_list = []
     for quote in quotes_data:
@@ -128,9 +137,8 @@ async def add_quote(quote: Quote):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error saving data to file: {str(e)}")
 
-
-# Ability to remove a quote by searching for the ID
-@app.get("/quote/remove/{id}")
+# /quotes/remove/11
+@app.get("/quotes/remove/{id}")
 async def remove_quote(id: int):
     filepath = 'quotes.json'
     
