@@ -1,5 +1,6 @@
 # Windows: #  python -m uvicorn main:app --reload 
 # Mac: #  python3 -m uvicorn main:app --reload 
+
 # pip install fastapi
 
 
@@ -9,6 +10,7 @@
 from fastapi import FastAPI, HTTPException, Query, Request
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
+from typing import Dict, List
 import json
 import os
 import random
@@ -19,12 +21,11 @@ role_permission: dict[str, list[str]] = {
     'viewer': ['read']
 }
 
-users = dict[str, dict[str, list[str]]] = {
+users: Dict[str, Dict[str, List[str]]] = {
     'user1': {'roles': ['admin']},
     'user2': {'roles': ['editor']},
     'user3': {'roles': ['viewer']}
 }
-
 app = FastAPI()
 
 # Placeholder data store (in-memory list for demonstration purposes)
@@ -136,6 +137,15 @@ async def add_quote(quote: Quote):
             json.dump(quotes_data, file, indent=2)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error saving data to file: {str(e)}")
+
+# /quotes/update/11
+@app.get('/quotes/update/{id}')
+async def update_quote(id: id):
+    quotes = 'quotes.json'
+
+    if not os.path.exists(quotes):
+        raise HTTPException(status_code=404, detail=f"No quote with the id {id} found")
+
 
 # /quotes/remove/11
 @app.get("/quotes/remove/{id}")
