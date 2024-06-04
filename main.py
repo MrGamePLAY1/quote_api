@@ -181,3 +181,8 @@ async def update_quote(id: id):
 
     if not os.path.exists(quotes):
         raise HTTPException(status_code=404, detail=f"No quote with the id {id} found")
+
+
+# /quotes/search/{query}{author: optional}{category: optional}
+@app.get('/quotes/search/{query}')
+async def search_for_quote(query: query):
