@@ -10,7 +10,7 @@
 from fastapi import FastAPI, HTTPException, Query, Request
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
-from typing import Dict, List
+from typing import Dict, List, Optional
 import json
 import os
 import random
@@ -176,7 +176,7 @@ async def remove_quote(id: int):
 
 # /quotes/update/11
 @app.get('/quotes/update/{id}')
-async def update_quote(id: id):
+async def update_quote(id: int):
     quotes = 'quotes.json'
 
     if not os.path.exists(quotes):
@@ -185,4 +185,13 @@ async def update_quote(id: id):
 
 # /quotes/search/{query}{author: optional}{category: optional}
 @app.get('/quotes/search/{query}')
-async def search_for_quote(query: query):
+async def search_for_quote(query: str, author: Optional[str] = None, category: Optional[str] = None):
+    # FIltering based on results
+    results = [quote for quote in quotes_data if query.lower() in quote["quote"].lower()]
+    if author:
+        results = [quote for quote in results if quote["author"].lower() == author.lower()]
+    
+    if category:
+        results = [quote for quote in results if quote["category"].lower() == category.lower()]
+    
+    return {"results": results}
